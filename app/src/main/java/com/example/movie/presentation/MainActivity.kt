@@ -1,26 +1,31 @@
 package com.example.movie.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.example.movie.R
-import com.example.movie.data.network.ApiFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.movie.databinding.ActivityMainBinding
+import com.example.movie.presentation.adapter.MovieAdapter
 
 class MainActivity : AppCompatActivity() {
 
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private lateinit var viewModel: MainViewModel
 
-    private var page = 1
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+        val adapter = MovieAdapter()
+        binding.recyclerViewMovies.adapter = adapter
+        binding.recyclerViewMovies.layoutManager = GridLayoutManager(this, 2)
 
-        scope.launch {
-            val movie = ApiFactory.apiService.getMovies(page++)
-            Log.d("MainActivity", "$movie")
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel.movies.observe(this) {
+            adapter.submitList(it)
         }
+        viewModel.loadMovies()
     }
 }
