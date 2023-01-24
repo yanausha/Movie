@@ -1,22 +1,30 @@
 package com.example.movie.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.movie.R
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.movie.databinding.ActivityMainBinding
+import com.example.movie.presentation.adapter.MovieAdapter
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+        val adapter = MovieAdapter()
+        binding.recyclerViewMovies.adapter = adapter
+        binding.recyclerViewMovies.layoutManager = GridLayoutManager(this, 2)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.movies.observe(this) {
-            Log.d("MainActivity", it.movies.toString())
+            adapter.submitList(it)
         }
         viewModel.loadMovies()
     }
