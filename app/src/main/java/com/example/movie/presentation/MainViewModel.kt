@@ -23,6 +23,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var page = 1
 
+    init {
+        loadMovies()
+    }
+
     fun loadMovies() {
 
         viewModelScope.launch {

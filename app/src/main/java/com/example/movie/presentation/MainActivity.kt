@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
             if (it) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.GONE
         }
-        viewModel.loadMovies()
 
         adapter.onScrollListener = object : MovieAdapter.OnScrollListener {
             override fun onScrollListEnd() {
