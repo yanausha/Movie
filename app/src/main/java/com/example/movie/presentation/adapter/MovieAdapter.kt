@@ -29,7 +29,7 @@ class MovieAdapter : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback) {
 
         holder.binding.textViewRating.text = String.format("%.2f", movie.rating.kp)
 
-        if (position == this.currentList.size - 1) onScrollListener?.onScrollListEnd()
+        if (position >= this.currentList.size - 10) onScrollListener?.onScrollListEnd()
     }
 
     interface OnScrollListener {
