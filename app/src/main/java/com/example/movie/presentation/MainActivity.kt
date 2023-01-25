@@ -1,6 +1,7 @@
 package com.example.movie.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.movies.observe(this) {
             adapter.submitList(it)
+        }
+        viewModel.isLoading.observe(this) {
+            if (it) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.GONE
         }
         viewModel.loadMovies()
 
