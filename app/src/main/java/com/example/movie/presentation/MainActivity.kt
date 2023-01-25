@@ -1,6 +1,7 @@
 package com.example.movie.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,6 +27,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.movies.observe(this) {
             adapter.submitList(it)
         }
-        viewModel.loadMovies()
+        viewModel.isLoading.observe(this) {
+            if (it) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.GONE
+        }
+
+        adapter.onScrollListener = object : MovieAdapter.OnScrollListener {
+            override fun onScrollListEnd() {
+                viewModel.loadMovies()
+            }
+        }
     }
 }
