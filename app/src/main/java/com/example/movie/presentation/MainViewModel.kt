@@ -20,8 +20,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadMovies() {
         viewModelScope.launch {
-            _movies.value = apiService.getMovies(page).movies
+            addMoviesToEnd()
             page++
+        }
+    }
+
+    private suspend fun addMoviesToEnd() {
+        val loadedMovies = movies.value?.toMutableList()
+        if (loadedMovies != null) {
+            movies.value?.let {
+                loadedMovies.addAll(it)
+                _movies.value = loadedMovies
+            }
+        } else {
+            _movies.value = apiService.getMovies(page).movies
         }
     }
 }

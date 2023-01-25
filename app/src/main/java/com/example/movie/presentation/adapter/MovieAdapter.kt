@@ -9,6 +9,8 @@ import com.example.movie.databinding.MovieItemBinding
 
 class MovieAdapter : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback) {
 
+    var onScrollListener: OnScrollListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding = MovieItemBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -27,5 +29,10 @@ class MovieAdapter : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback) {
 
         holder.binding.textViewRating.text = String.format("%.2f", movie.rating.kp)
 
+        if (position == this.currentList.size - 1) onScrollListener?.onScrollListEnd()
+    }
+
+    interface OnScrollListener {
+        fun onScrollListEnd()
     }
 }

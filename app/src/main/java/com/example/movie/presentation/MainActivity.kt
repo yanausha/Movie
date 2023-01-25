@@ -27,5 +27,11 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(it)
         }
         viewModel.loadMovies()
+
+        adapter.onScrollListener = object : MovieAdapter.OnScrollListener {
+            override fun onScrollListEnd() {
+                viewModel.loadMovies()
+            }
+        }
     }
 }
