@@ -1,7 +1,6 @@
 package com.example.movie.presentation
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,13 +30,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             if (checkLoadingMovies()) return@launch
-
             _isLoading.value = true
             delay(5000)
             addMoviesToEnd()
             _isLoading.value = false
-//            noMore = true
-            Log.d("ViewModel", page.toString())
             page++
         }
     }
@@ -50,10 +46,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun addMoviesToEnd() {
         val loadedMovies = movies.value?.toMutableList()
         if (loadedMovies != null) {
-            movies.value?.let {
-                loadedMovies.addAll(it)
-                _movies.value = loadedMovies
-            }
+            apiService.getMovies(page).movies?.let { loadedMovies.addAll(it) }
+            _movies.value = loadedMovies.toList()
         } else {
             _movies.value = apiService.getMovies(page).movies
         }
