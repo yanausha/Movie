@@ -26,15 +26,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun loadMovies() {
 
         viewModelScope.launch {
+            if (checkLoadingMovies()) return@launch
+
             _isLoading.value = true
             delay(5000)
-            Log.d("ViewModel", isLoading.value.toString())
             addMoviesToEnd()
             _isLoading.value = false
+//            noMore = true
+            Log.d("ViewModel", page.toString())
             page++
-            Log.d("ViewModel", isLoading.value.toString())
         }
-        Log.d("ViewModel", isLoading.value.toString())
+    }
+
+    private fun checkLoadingMovies(): Boolean {
+        val noMore = isLoading.value
+        return noMore != null && noMore
     }
 
     private suspend fun addMoviesToEnd() {
@@ -47,6 +53,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         } else {
             _movies.value = apiService.getMovies(page).movies
         }
-
     }
 }
