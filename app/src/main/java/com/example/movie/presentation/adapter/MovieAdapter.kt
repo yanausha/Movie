@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.example.movie.R
-import com.example.movie.data.network.model.MovieDto
 import com.example.movie.databinding.MovieItemBinding
+import com.example.movie.domain.Movie
 
-class MovieAdapter : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback) {
+class MovieAdapter : ListAdapter<Movie, MovieViewHolder>(MovieDiffCallback) {
+
+    var onClickMovieListener: OnClickMovieListener? = null
 
     var onScrollListener: OnScrollListener? = null
 
@@ -24,17 +26,17 @@ class MovieAdapter : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback) {
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
 
         val movie = getItem(position)
-        val rating = movie.rating.kp ?: 0.00
+        val rating = movie.rating ?: 0.00
 
         try {
             Glide.with(holder.itemView)
-                .load(movie.poster.url)
+                .load(movie.poster)
                 .into(holder.binding.imageViewPoster)
         } catch (e: Exception) {
             holder.binding.imageViewPoster.setBackgroundResource(R.drawable.noposter)
         }
 
-        holder.binding.textViewRating.text = String.format("%.2f", movie.rating.kp)
+        holder.binding.textViewRating.text = String.format("%.2f", movie.rating)
 
         with(holder.binding) {
             when (rating) {
@@ -44,10 +46,20 @@ class MovieAdapter : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback) {
             }
         }
 
-        if (position >= this.currentList.size - 10) onScrollListener?.onScrollListEnd()
+        if (position >= this.currentList.size - 10) {
+            onScrollListener?.onScrollListEnd()
+        }
+
+        holder.binding.root.setOnClickListener {
+            onClickMovieListener?.onClickMovie(movie)
+        }
     }
 
     interface OnScrollListener {
         fun onScrollListEnd()
+    }
+
+    interface OnClickMovieListener {
+        fun onClickMovie(movie: Movie)
     }
 }

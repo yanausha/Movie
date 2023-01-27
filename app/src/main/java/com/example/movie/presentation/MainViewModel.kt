@@ -2,54 +2,35 @@ package com.example.movie.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.movie.data.network.ApiFactory
-import com.example.movie.data.network.model.MovieDto
-import kotlinx.coroutines.delay
+import com.example.movie.data.repository.MovieRepositoryImpl
+import com.example.movie.domain.GetMovieInfoUseCase
+import com.example.movie.domain.GetMovieListUseCase
+import com.example.movie.domain.LoadMoviesUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val apiService = ApiFactory.apiService
+    private val repository = MovieRepositoryImpl(application)
 
-    private val _movies = MutableLiveData<List<MovieDto>>()
-    val movies: LiveData<List<MovieDto>> = _movies
+    private val getMovieListUseCase = GetMovieListUseCase(repository)
+    private val getMovieInfoUseCase = GetMovieInfoUseCase(repository)
+    private val loadMoviesUseCase = LoadMoviesUseCase(repository)
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private var page = 1
-
-    init {
-        loadMovies()
-    }
+    val movieList = getMovieListUseCase()
+    fun getMovieInfo(movieId: Int) = getMovieInfoUseCase(movieId)
 
     fun loadMovies() {
-
         viewModelScope.launch {
-            if (checkLoadingMovies()) return@launch
-            _isLoading.value = true
-            delay(5000)
-            addMoviesToEnd()
-            _isLoading.value = false
-            page++
+            loadMoviesUseCase()
         }
     }
 
-    private fun checkLoadingMovies(): Boolean {
-        val noMore = isLoading.value
-        return noMore != null && noMore
-    }
+    fun isLoading() = repository.isLoading
 
-    private suspend fun addMoviesToEnd() {
-        val loadedMovies = movies.value?.toMutableList()
-        if (loadedMovies != null) {
-            apiService.getMovies(page).movies?.let { loadedMovies.addAll(it) }
-            _movies.value = loadedMovies.toList()
-        } else {
-            _movies.value = apiService.getMovies(page).movies
+    init {
+        viewModelScope.launch {
+            loadMoviesUseCase()
         }
     }
 }
