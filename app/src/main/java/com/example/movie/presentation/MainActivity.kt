@@ -19,15 +19,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         val adapter = MovieAdapter()
         binding.recyclerViewMovies.adapter = adapter
         binding.recyclerViewMovies.layoutManager = GridLayoutManager(this, 2)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.movies.observe(this) {
+        viewModel.movieList.observe(this) {
             adapter.submitList(it)
         }
-        viewModel.isLoading.observe(this) {
+        viewModel.isLoading().observe(this) {
             if (it) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.GONE
         }

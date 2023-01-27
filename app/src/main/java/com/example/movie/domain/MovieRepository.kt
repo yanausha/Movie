@@ -7,4 +7,6 @@ interface MovieRepository {
     fun getMovieList(): LiveData<List<Movie>>
 
     fun getMovieInfo(movieId: Int): LiveData<Movie>
+
+    suspend fun loadMovies()
 }
