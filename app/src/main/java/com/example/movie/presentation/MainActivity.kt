@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movie.databinding.ActivityMainBinding
+import com.example.movie.domain.Movie
 import com.example.movie.presentation.adapter.MovieAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +37,13 @@ class MainActivity : AppCompatActivity() {
         adapter.onScrollListener = object : MovieAdapter.OnScrollListener {
             override fun onScrollListEnd() {
                 viewModel.loadMovies()
+            }
+        }
+
+        adapter.onClickMovieListener = object : MovieAdapter.OnClickMovieListener {
+            override fun onClickMovie(movie: Movie) {
+                val intent = MovieDetailActivity.newIntent(this@MainActivity, movie)
+                startActivity(intent)
             }
         }
     }
