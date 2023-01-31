@@ -8,6 +8,8 @@ import com.example.movie.domain.Trailer
 
 class TrailerAdapter : ListAdapter<Trailer, TrailerViewHolder>(TrailerDiffCallback) {
 
+    var onTrailerClickListener: OnTrailerClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailerViewHolder {
         val binding = TrailerItemBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -18,9 +20,16 @@ class TrailerAdapter : ListAdapter<Trailer, TrailerViewHolder>(TrailerDiffCallba
     }
 
     override fun onBindViewHolder(holder: TrailerViewHolder, position: Int) {
+
         val trailer = getItem(position)
-        with(holder.binding) {
-            textViewTrailerName.text = trailer.name
+        holder.binding.textViewTrailerName.text = trailer.name
+
+        holder.binding.root.setOnClickListener {
+            onTrailerClickListener?.onTrailerClick(trailer)
         }
+    }
+
+    interface OnTrailerClickListener {
+        fun onTrailerClick(trailer: Trailer)
     }
 }

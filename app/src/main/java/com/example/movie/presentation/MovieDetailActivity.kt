@@ -2,12 +2,14 @@ package com.example.movie.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.movie.R
 import com.example.movie.databinding.ActivityMovieDetailBinding
+import com.example.movie.domain.Trailer
 import com.example.movie.presentation.adapter.TrailerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +50,15 @@ class MovieDetailActivity : AppCompatActivity() {
 
                 val trailers = viewModel.getTrailers(movieId)
                 trailerAdapter.submitList(trailers)
+            }
+        }
+
+        trailerAdapter.onTrailerClickListener = object : TrailerAdapter.OnTrailerClickListener {
+
+            override fun onTrailerClick(trailer: Trailer) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(trailer.url)
+                startActivity(intent)
             }
         }
     }
