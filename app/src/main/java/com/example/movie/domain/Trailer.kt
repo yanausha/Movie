@@ -1,6 +1,7 @@
 package com.example.movie.domain
 
 data class Trailer(
-    private val name: String,
-    private val url: String
+    val id: Int,
+    val name: String?,
+    val url: String?
 )

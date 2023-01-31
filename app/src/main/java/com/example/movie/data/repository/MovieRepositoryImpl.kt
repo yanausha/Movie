@@ -61,7 +61,7 @@ class MovieRepositoryImpl(private val application: Application) : MovieRepositor
     override suspend fun getTrailers(movieId: Int): List<Trailer> {
         val trailer = apiService.getTrailers(movieId).videos
         return trailer.trailers.map {
-            mapper.mapTrailerDtoToEntity(it)
+            mapper.mapTrailerDtoToEntity(movieId, it)
         }
     }
 

@@ -3,12 +3,12 @@ package com.example.movie.presentation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.movie.R
 import com.example.movie.databinding.ActivityMovieDetailBinding
+import com.example.movie.presentation.adapter.TrailerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -28,6 +28,9 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val trailerAdapter = TrailerAdapter()
+        binding.recyclerViewTrailers.adapter = trailerAdapter
+
         val movieId = intent.getIntExtra(EXTRA_MOVIE, 111)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
@@ -44,7 +47,7 @@ class MovieDetailActivity : AppCompatActivity() {
                 textViewDescription.text = movie.description
 
                 val trailers = viewModel.getTrailers(movieId)
-                Log.d("Detail", trailers.toString())
+                trailerAdapter.submitList(trailers)
             }
         }
     }

@@ -14,7 +14,8 @@ class MovieMapper {
         movie.poster.url,
         movie.rating.kp
     )
-    fun mapTrailerDtoToEntity(trailer: TrailerDto) = Trailer(
+    fun mapTrailerDtoToEntity(movieId: Int, trailer: TrailerDto) = Trailer(
+        movieId,
         trailer.name,
         trailer.url
     )
