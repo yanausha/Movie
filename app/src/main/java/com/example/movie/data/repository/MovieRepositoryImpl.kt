@@ -9,6 +9,7 @@ import com.example.movie.data.network.ApiFactory
 import com.example.movie.data.network.model.MovieDto
 import com.example.movie.domain.Movie
 import com.example.movie.domain.MovieRepository
+import com.example.movie.domain.Trailer
 import kotlinx.coroutines.delay
 
 class MovieRepositoryImpl(private val application: Application) : MovieRepository {
@@ -27,7 +28,7 @@ class MovieRepositoryImpl(private val application: Application) : MovieRepositor
     override fun getMovieList(): LiveData<List<Movie>> {
         return Transformations.map(movies) {
             it.map {
-                mapper.mapDtoToEntity(it)
+                mapper.mapMovieDtoToEntity(it)
             }
         }
     }
@@ -50,6 +51,10 @@ class MovieRepositoryImpl(private val application: Application) : MovieRepositor
         }
         _isLoading.value = false
         page++
+    }
+
+    override suspend fun getTrailers(movieId: Int): LiveData<Trailer> {
+        TODO()
     }
 
     private fun checkLoadingMovies(): Boolean {

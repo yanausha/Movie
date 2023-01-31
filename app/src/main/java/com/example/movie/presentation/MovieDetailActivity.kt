@@ -4,13 +4,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.movie.R
+import com.example.movie.data.network.ApiFactory
 import com.example.movie.databinding.ActivityMovieDetailBinding
 import com.example.movie.domain.Movie
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -19,6 +24,8 @@ class MovieDetailActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityMovieDetailBinding.inflate(layoutInflater)
     }
+
+    private val scope = CoroutineScope(Dispatchers.Main)
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +51,11 @@ class MovieDetailActivity : AppCompatActivity() {
                     textViewDescription.text = movie?.description
                 }
             }
+        }
+
+        scope.launch {
+            val trailers = ApiFactory.apiService.getTrailers(movie?.id ?: 0)
+            Log.d("Detail", trailers.toString())
         }
     }
 

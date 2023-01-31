@@ -9,4 +9,6 @@ interface MovieRepository {
     fun getMovieInfo(movieId: Int): LiveData<Movie>
 
     suspend fun loadMovies()
+
+    suspend fun getTrailers(movieId: Int): LiveData<Trailer>
 }
