@@ -11,4 +11,6 @@ interface MovieRepository {
     suspend fun loadMovies()
 
     suspend fun getTrailers(movieId: Int): List<Trailer>
+
+    suspend fun getReviews(movieId: Int): List<Review>
 }

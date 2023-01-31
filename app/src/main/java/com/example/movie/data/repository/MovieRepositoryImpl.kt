@@ -9,6 +9,7 @@ import com.example.movie.data.network.ApiFactory
 import com.example.movie.data.network.model.MovieDto
 import com.example.movie.domain.Movie
 import com.example.movie.domain.MovieRepository
+import com.example.movie.domain.Review
 import com.example.movie.domain.Trailer
 import kotlinx.coroutines.delay
 
@@ -37,7 +38,6 @@ class MovieRepositoryImpl(private val application: Application) : MovieRepositor
 
         val movie = apiService.getMovie(movieId)
         return mapper.mapMovieDtoToEntity(movie)
-
     }
 
     override suspend fun loadMovies() {
@@ -62,6 +62,13 @@ class MovieRepositoryImpl(private val application: Application) : MovieRepositor
         val trailer = apiService.getTrailers(movieId).videos
         return trailer.trailers.map {
             mapper.mapTrailerDtoToEntity(movieId, it)
+        }
+    }
+
+    override suspend fun getReviews(movieId: Int): List<Review> {
+        val review = apiService.getReviews(movieId)
+        return review.reviews.map {
+            mapper.mapReviewDtoToEntity(movieId, it)
         }
     }
 

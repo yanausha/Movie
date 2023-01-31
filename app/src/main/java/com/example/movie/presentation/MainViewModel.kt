@@ -15,6 +15,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val getMovieInfoUseCase = GetMovieInfoUseCase(repository)
     private val loadMoviesUseCase = LoadMoviesUseCase(repository)
     private val getTrailersUseCase = GetTrailersUseCase(repository)
+    private val getReviewUseCase = GetReviewUseCase(repository)
 
     val movieList = getMovieListUseCase()
 
@@ -32,6 +33,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun getTrailers(movieId: Int): List<Trailer> {
         return getTrailersUseCase(movieId)
+    }
+
+    suspend fun getReviews(movieId: Int): List<Review> {
+        return getReviewUseCase(movieId)
     }
 
     init {

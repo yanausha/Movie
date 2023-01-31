@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.movie.R
 import com.example.movie.databinding.ActivityMovieDetailBinding
 import com.example.movie.domain.Trailer
+import com.example.movie.presentation.adapter.ReviewAdapter
 import com.example.movie.presentation.adapter.TrailerAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +34,9 @@ class MovieDetailActivity : AppCompatActivity() {
         val trailerAdapter = TrailerAdapter()
         binding.recyclerViewTrailers.adapter = trailerAdapter
 
+        val reviewAdapter = ReviewAdapter()
+        binding.recyclerViewReviews.adapter = reviewAdapter
+
         val movieId = intent.getIntExtra(EXTRA_MOVIE, 111)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
@@ -47,10 +51,13 @@ class MovieDetailActivity : AppCompatActivity() {
                 textViewTitle.text = movie.name
                 textViewYear.text = movie.year.toString()
                 textViewDescription.text = movie.description
-
-                val trailers = viewModel.getTrailers(movieId)
-                trailerAdapter.submitList(trailers)
             }
+
+            val trailers = viewModel.getTrailers(movieId)
+            trailerAdapter.submitList(trailers)
+
+            val review = viewModel.getReviews(movieId)
+            reviewAdapter.submitList(review)
         }
 
         trailerAdapter.onTrailerClickListener = object : TrailerAdapter.OnTrailerClickListener {
