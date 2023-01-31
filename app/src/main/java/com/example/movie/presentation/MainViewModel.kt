@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movie.data.repository.MovieRepositoryImpl
-import com.example.movie.domain.GetMovieInfoUseCase
-import com.example.movie.domain.GetMovieListUseCase
-import com.example.movie.domain.GetTrailersUseCase
-import com.example.movie.domain.LoadMoviesUseCase
+import com.example.movie.domain.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -21,7 +18,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val movieList = getMovieListUseCase()
 
-    fun getMovieInfo(movieId: Int) = getMovieInfoUseCase(movieId)
+    suspend fun getMovieInfo(movieId: Int): Movie {
+        return getMovieInfoUseCase(movieId)
+    }
 
     fun loadMovies() {
         viewModelScope.launch {
@@ -31,10 +30,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun isLoading() = repository.isLoading
 
-    fun getTrailers(movieId: Int) {
-        viewModelScope.launch {
-            getTrailersUseCase(movieId)
-        }
+    suspend fun getTrailers(movieId: Int): List<Trailer> {
+        return getTrailersUseCase(movieId)
     }
 
     init {

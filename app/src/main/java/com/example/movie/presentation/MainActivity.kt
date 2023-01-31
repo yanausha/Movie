@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter.onClickMovieListener = object : MovieAdapter.OnClickMovieListener {
             override fun onClickMovie(movie: Movie) {
-                val intent = MovieDetailActivity.newIntent(this@MainActivity, movie)
+                val intent = MovieDetailActivity.newIntent(this@MainActivity, movie.id)
                 startActivity(intent)
             }
         }

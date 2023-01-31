@@ -33,12 +33,17 @@ class MovieRepositoryImpl(private val application: Application) : MovieRepositor
         }
     }
 
-    override fun getMovieInfo(movieId: Int): LiveData<Movie> {
-        TODO()
+    override suspend fun getMovieInfo(movieId: Int): Movie {
+
+        val movie = apiService.getMovie(movieId)
+        return mapper.mapMovieDtoToEntity(movie)
+
     }
 
     override suspend fun loadMovies() {
+
         if (checkLoadingMovies()) return
+
         _isLoading.value = true
         delay(5000)
         val loadedMovies = movies.value?.toMutableList()
@@ -53,8 +58,11 @@ class MovieRepositoryImpl(private val application: Application) : MovieRepositor
         page++
     }
 
-    override suspend fun getTrailers(movieId: Int): LiveData<Trailer> {
-        TODO()
+    override suspend fun getTrailers(movieId: Int): List<Trailer> {
+        val trailer = apiService.getTrailers(movieId).videos
+        return trailer.trailers.map {
+            mapper.mapTrailerDtoToEntity(it)
+        }
     }
 
     private fun checkLoadingMovies(): Boolean {
