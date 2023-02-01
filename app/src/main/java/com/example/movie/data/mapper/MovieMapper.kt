@@ -1,5 +1,6 @@
 package com.example.movie.data.mapper
 
+import com.example.movie.data.database.FavoriteMovieDbModel
 import com.example.movie.data.network.model.MovieDto
 import com.example.movie.data.network.model.ReviewDto
 import com.example.movie.data.network.model.TrailerDto
@@ -29,5 +30,23 @@ class MovieMapper {
         review.userRating,
         review.type,
         review.review
+    )
+
+    fun mapMovieDtoToDbModel(movie: MovieDto) = FavoriteMovieDbModel(
+        movie.id,
+        movie.name,
+        movie.year,
+        movie.description,
+        movie.poster.url,
+        movie.rating.kp
+    )
+
+    fun mapMovieDbModelToEntity(movie: FavoriteMovieDbModel) = Movie(
+        movie.id,
+        movie.name,
+        movie.year,
+        movie.description,
+        movie.poster,
+        movie.rating
     )
 }
