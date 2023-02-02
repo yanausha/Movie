@@ -14,10 +14,15 @@
         android:theme="@style/Theme.Movie"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MovieDetailActivity" />
+            android:name=".presentation.FavoriteMoviesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.MovieDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

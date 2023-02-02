@@ -6,17 +6,17 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface MovieInfoDao {
+interface FavoriteMovieDao {
 
     @Query("SELECT * FROM favorite_movies")
-    fun getMovieList(): LiveData<List<MovieInfoDbModel>>
+    fun getFavoriteMovieList(): LiveData<List<FavoriteMovieDbModel?>>
 
     @Query("SELECT * FROM favorite_movies WHERE id == :id")
-    fun getMovieInfo(id: Int): LiveData<MovieInfoDbModel>
+    fun getFavoriteMovieInfo(id: Int): LiveData<FavoriteMovieDbModel?>
 
     @Insert
-    suspend fun insertMovie(movie: MovieInfoDbModel)
+    suspend fun insertFavoriteMovie(movie: FavoriteMovieDbModel)
 
     @Query("DELETE FROM favorite_movies WHERE id == :id")
-    suspend fun deleteMovie(id: Int)
+    suspend fun deleteFavoriteMovie(id: Int)
 }

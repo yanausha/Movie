@@ -1,6 +1,9 @@
 package com.example.movie.data.network
 
+import com.example.movie.data.network.model.MovieDto
 import com.example.movie.data.network.model.MovieResponseDto
+import com.example.movie.data.network.model.ReviewResponseDto
+import com.example.movie.data.network.model.TrailerResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,4 +13,19 @@ interface ApiService {
     suspend fun getMovies(
         @Query("page") page: Int
     ): MovieResponseDto
+
+    @GET("movie?token=2EA18DT-MHPMKV6-HJEPKT6-3G6BTKJ&field=id")
+    suspend fun getMovie(
+        @Query("search") id: Int
+    ): MovieDto
+
+    @GET("movie?token=2EA18DT-MHPMKV6-HJEPKT6-3G6BTKJ&field=id")
+    suspend fun getTrailers(
+        @Query("search") id: Int
+    ): TrailerResponseDto
+
+    @GET("review?token=2EA18DT-MHPMKV6-HJEPKT6-3G6BTKJ&field=movieId")
+    suspend fun getReviews(
+        @Query("search") id: Int
+    ): ReviewResponseDto
 }

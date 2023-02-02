@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity("favorite_movies")
-data class MovieInfoDbModel(
+data class FavoriteMovieDbModel(
     @PrimaryKey
     val id: Int,
     val name: String?,
