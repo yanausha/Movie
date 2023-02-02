@@ -1,10 +1,13 @@
 package com.example.movie.presentation
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.movie.R
 import com.example.movie.databinding.ActivityMainBinding
 import com.example.movie.domain.Movie
 import com.example.movie.presentation.adapter.MovieAdapter
@@ -46,5 +49,18 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menuFavoriteMovies) {
+            val intent = FavoriteMoviesActivity.newIntent(this)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
