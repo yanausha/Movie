@@ -32,13 +32,13 @@ class MovieMapper {
         review.review
     )
 
-    fun mapMovieDtoToDbModel(movie: MovieDto) = FavoriteMovieDbModel(
+    fun mapMovieEntityToDbModel(movie: Movie) = FavoriteMovieDbModel(
         movie.id,
         movie.name,
         movie.year,
         movie.description,
-        movie.poster.url,
-        movie.rating.kp
+        movie.poster,
+        movie.rating
     )
 
     fun mapMovieDbModelToEntity(movie: FavoriteMovieDbModel) = Movie(

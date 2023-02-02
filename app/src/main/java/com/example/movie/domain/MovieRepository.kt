@@ -13,4 +13,12 @@ interface MovieRepository {
     suspend fun getTrailers(movieId: Int): List<Trailer>
 
     suspend fun getReviews(movieId: Int): List<Review>
+
+    suspend fun insertFavoriteMovie(movie: Movie)
+
+    fun getFavoriteMovie(movieId: Int): LiveData<Movie?>
+
+    fun getFavoriteMovieList(): LiveData<List<Movie?>>
+
+    suspend fun deleteFavoriteMovie(movieId: Int)
 }

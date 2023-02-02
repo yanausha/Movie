@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.movie.R
@@ -30,6 +31,9 @@ class MovieDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val favoriteOff = ContextCompat.getDrawable(this, R.drawable.not_favorite)
+        val favoriteOn = ContextCompat.getDrawable(this, R.drawable.add_favorite)
 
         val trailerAdapter = TrailerAdapter()
         binding.recyclerViewTrailers.adapter = trailerAdapter
@@ -58,6 +62,20 @@ class MovieDetailActivity : AppCompatActivity() {
 
             val review = viewModel.getReviews(movieId)
             reviewAdapter.submitList(review)
+
+            viewModel.getFavoriteMovie(movieId).observe(this@MovieDetailActivity) {
+                if (it == null) {
+                    binding.imageViewSave.setImageDrawable(favoriteOff)
+                    binding.imageViewSave.setOnClickListener {
+                        viewModel.insertFavoriteMovie(movie)
+                    }
+                } else {
+                    binding.imageViewSave.setImageDrawable(favoriteOn)
+                    binding.imageViewSave.setOnClickListener {
+                        viewModel.deleteFavoriteMovie(movieId)
+                    }
+                }
+            }
         }
 
         trailerAdapter.onTrailerClickListener = object : TrailerAdapter.OnTrailerClickListener {
