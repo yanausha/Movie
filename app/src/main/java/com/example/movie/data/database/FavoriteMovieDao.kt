@@ -9,10 +9,10 @@ import androidx.room.Query
 interface FavoriteMovieDao {
 
     @Query("SELECT * FROM favorite_movies")
-    fun getFavoriteMovieList(): LiveData<List<FavoriteMovieDbModel>>
+    fun getFavoriteMovieList(): LiveData<List<FavoriteMovieDbModel?>>
 
     @Query("SELECT * FROM favorite_movies WHERE id == :id")
-    fun getFavoriteMovieInfo(id: Int): LiveData<FavoriteMovieDbModel>
+    fun getFavoriteMovieInfo(id: Int): LiveData<FavoriteMovieDbModel?>
 
     @Insert
     suspend fun insertFavoriteMovie(movie: FavoriteMovieDbModel)
