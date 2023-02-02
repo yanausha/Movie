@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movie.databinding.ActivityFavoriteMoviesBinding
+import com.example.movie.domain.Movie
 import com.example.movie.presentation.adapter.MovieAdapter
 
 class FavoriteMoviesActivity : AppCompatActivity() {
@@ -32,6 +33,14 @@ class FavoriteMoviesActivity : AppCompatActivity() {
         viewModel.favoriteMovies.observe(this) {
             if (it != null) {
                 adapter.submitList(it)
+            }
+        }
+
+        adapter.onClickMovieListener = object : MovieAdapter.OnClickMovieListener {
+
+            override fun onClickMovie(movie: Movie) {
+                val intent = MovieDetailActivity.newIntent(this@FavoriteMoviesActivity, movie.id)
+                startActivity(intent)
             }
         }
     }
